@@ -104,4 +104,43 @@ function $(id) {
 })();
 
 
+//类和对象解耦，学生回答问题
+var Student = function(result){
+    var that = this;
+    that.result = result;
+    this.say = function(){
+        console.log(that.result);
+    }
+}
+Student.prototype.answer = function(question){
+    Observer.regist(question,this.say);
+};
+Student.prototype.sleep = function(question){
+    console.log(this.result +''+question +'已被注销');
+    Observer.remove(question,this.say)
+};
+
+var Teacher = function(){
+}
+Teacher.prototype.ask = function(question){
+    console.log('问题是：'+ question);
+    Observer.fire(question);
+}
+
+var stu1 = new Student('stu1 answer:'),
+    stu2 = new Student('stu2 answer:'),
+    stu3 = new Student('stu3 answer:');
+
+stu1.answer('1+1=?');
+stu1.answer('2+2=?');
+stu2.sleep('1+1=?');
+stu2.sleep('2+2=?');
+stu3.answer('1+1=?');
+stu3.answer('2+2=?');
+
+var tea1 = new Teacher();
+tea1.ask('1+1=?');
+tea1.ask('2+2=?');
+
+
 
